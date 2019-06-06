@@ -5,7 +5,7 @@
 const app = require("express")();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const Route = require("./routes/routes");
+const Route = require("./routes/routes.js");
 const port = 8080;
 
 //je dit a express d'utiliser cors et les () pour executer
