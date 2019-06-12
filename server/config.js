@@ -25,8 +25,8 @@ connection.connect(err => {
        matricule int(255) NOT NULL, 
        email varchar(255) NOT NULL,
        password varchar(255) NOT NULL,
-       create_at datetime NOT NULL,
-       updated_at datetime NOT NULL,
+       created_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+       updated_at DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
        PRIMARY KEY (id)
    ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`;
 
