@@ -1,12 +1,44 @@
 const app = require("express")();
 const connection = require("../config");
 const bcrypt = require("bcrypt");
+const jwt =require("jsonwebtoken");
 
 //on a defini une route en utilisant express qui vas nous permettre de faire du CRUD
 app.get("/", (req, res) => {
-  return res.send("ca marche");
+  const stockToken = req.headers.login;
+  jwt.verify(stockToken, 'DBG', function(err, decoded) {
+    if(err){
+      return res.status(403).send("veuillez vous reconnecter")
+    }
+    else{
+      return res.send("ca marche");
+    }
+  });
 });
 
+//recup la liste utilisateur
+app.get("/users", (req, res)=>{
+  connection.query("SELECT * FROM si_sng.users", function(err, results){
+    if(err){
+      return res.status(500).send("probleme query")
+    }
+    else{
+      return res.status(200).send(results)
+    }
+  })
+})
+
+//pour recuper 1 utilisateur
+app.get("/user/:id", (req, res)=>{
+  connection.query(`SELECT * FROM si_sng.users WHERE id = ${req.params.id}`, function(err, results){
+    if(err){
+      return res.status(500).send("probleme query")
+    }
+    else{
+      return res.status(200).send(results)
+    }
+  })
+})
 //creation de l'inscription
 // create = post
 // read = get
@@ -26,12 +58,19 @@ app.post("/register",async (req, res) =>{
     email: req.body.email,
     password: hash,
   }
+  
   if(user.nom && user.prenom && user.matricule && user.email && user.password){
-    
-  //on insert ds la table user notre objet
+    connection.query(`SELECT matricule FROM si_sng.users WHERE matricule = ${user.matricule}`,function(err, results){
+      if (err){
+        console.log(err);
+      }
+      if(results.length > 0){
+        res.status(403).send("ce matricule existe deja")
+      }else{
+        //on insert ds la table user notre objet
   console.log('en dehors')
   //set ? pour les injections
-  connection.query("INSERT INTO si_sng.users SET ?", user, function(err, result) {
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           connection.query("INSERT INTO si_sng.users SET ?", user, function(err, result) {
     console.log('dans notre requete')
     if(err){
       console.log(err)
@@ -44,6 +83,9 @@ app.post("/register",async (req, res) =>{
       })
     }
   })
+      }
+    })
+  
  }else{
    res.status(500).send({
      message:"tout les champs sont obligatoire",
@@ -69,7 +111,9 @@ app.post("/login", (req,res)=> {
             res.status(500).send("erreur"+ err)
           }
           if(response){
+            const token = jwt.sign({userMatricule}, 'DBG',{ expiresIn: '2m' });
             res.status(200).send({
+            token:token,
             message:"utilisateur connecté"
           })
 
@@ -80,12 +124,10 @@ app.post("/login", (req,res)=> {
         };
       })
       }else{
-        res.status(500).send({
-          message:"matricule ou password incorrect",
-      })
+        res.status(404).send("matricule ou password incorrect")
     }})
   }else{
-      res.status(500).send({
+      res.status(400).send({
         message:"tout les champs sont obligatoire"
   })
 }})

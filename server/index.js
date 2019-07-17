@@ -8,6 +8,7 @@ const cors = require("cors");
 const Route = require("./routes/routes.js");
 const port = 8080;
 
+
 //je dit a express d'utiliser cors et les () pour executer
 app.use(cors());
 
