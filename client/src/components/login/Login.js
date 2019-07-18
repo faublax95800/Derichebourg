@@ -41,7 +41,7 @@ class Login extends Component {
 
     }
 
-//permet d'afficher les user dans home
+// permet d'afficher les user dans home
 //password version destructuré 
 //matrictule version normal
     render(){

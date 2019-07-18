@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import axios from 'axios';
+import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 class Home extends Component{
     state = {
@@ -21,14 +22,6 @@ class Home extends Component{
             //console.log(err.res.data.message);
         })
     }
-    //id en attendant l'event onClick du vrais id 
-    getUserById = (id) =>{
-        //je recupere grace a mon back l'id selectionné
-        //.then promesse d'une action 
-       console.log(id);
-       
-        
-    }
     
     render(){
         const getToken = localStorage.getItem("userToken");
@@ -42,7 +35,7 @@ class Home extends Component{
                         <div key={user.id}>
                         <p>{user.nom}</p>
                         <p>{user.matricule}</p>
-                        <button onClick = {()=>this.getUserById(user)} >voir fiche user</button>
+                        <Link to={`/user/${user.id}`}>voir fiche user</Link>
                         </div>)
                     }): <p>page d'accueil</p>                       
                

@@ -5,7 +5,7 @@ import Login from './components/login/Login.js';
 import Home from './components/home/Home.js';
 import Navbar from './components/navbar/Navbar.js';
 import {BrowserRouter as Router, Route} from 'react-router-dom';
-
+import User from './components/user/User.js'
 
 //exact = la que je souhaite avoir par defaut
 function App() {
@@ -17,6 +17,7 @@ function App() {
       <Route path = "/" component={Home} exact/>
       <Route path = "/register" component ={Register}/>
       <Route path = "/login" component ={Login}/>
+      <Route path = "/user/:id" component ={User}/>
       </div>
     </Router>
     </div>
