@@ -16,6 +16,31 @@ app.get("/", (req, res) => {
   });
 });
 
+//recup info materiel
+app.get("/materiel",(req, res)=>{
+  connection.query("SELECT * FROM si_sng.materiel", function(err, results){
+    if(err){
+      return res.status(500).send("probleme query")
+    }
+    else{
+      return res.status(200).send(results)
+    }
+  })
+})
+
+//recup info app
+app.get("/application",(req, res)=>{
+  connection.query("SELECT * FROM si_sng.application", function(err, results){
+    if(err){
+      return res.status(500).send("probleme query")
+    }
+    else{
+      return res.status(200).send(results)
+    }
+  })
+})
+
+
 //recup la liste utilisateur
 app.get("/users", (req, res)=>{
   connection.query("SELECT * FROM si_sng.users", function(err, results){
