@@ -4,7 +4,8 @@ import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
 
 class Home extends Component{
     state = {
-        listUsers:[]
+        listUsers:[],
+        search:''
     }
     //cycle de vie 
    componentDidMount(){
@@ -22,18 +23,35 @@ class Home extends Component{
             //console.log(err.res.data.message);
         })
     }
+
+    handleChange = event => {
+        this.setState({
+          [event.target.name]: event.target.value
+        });
+      };
     
     render(){
         const getToken = localStorage.getItem("userToken");
+        const filteredUsers = this.state.listUsers.filter(user => {
+            return user.prenom.toLowerCase().includes(this.state.search.toLowerCase())
+          });
 
-
+          console.log(filteredUsers)
+          //champ de recherche 
         return(<div>
+                  <input
+          type="text"
+          name="search"
+          placeholder="Votre recherche"
+          value={this.state.search}
+          onChange={this.handleChange}
+        />
             {
                 // condition si on a un token j'ai un user afficher sinon pas connecter
-                    !!getToken ?  this.state.listUsers.map(user=>{
+                    !!getToken ?  filteredUsers.map(user=>{
                         return(
                         <div key={user.id}>
-                        <p>{user.nom}</p>
+                        <p>{user.prenom}</p>
                         <p>{user.matricule}</p>
                         <Link to={`/user/${user.id}`}>voir fiche user</Link>
                         </div>)

@@ -31,9 +31,9 @@ class Login extends Component {
         } 
         axios.post("http://localhost:8080/login", user).then(res =>{
         localStorage.setItem("userToken", res.data.token);
-        this.props.history.push("/")   
-        console.log(res.data);
-            
+        this.props.history.push("/") 
+        //j'envoi 1 objet ds le local storage 
+        localStorage.setItem("myUser", JSON.stringify(res.data.user))
         }).catch(err=>{
             console.log(err)
             //console.log(err.res.data.message);

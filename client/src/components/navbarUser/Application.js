@@ -5,7 +5,7 @@ class Application extends Component {
     state = {
         dataApplication:[]
     }
-    omponentDidMount(){
+    componentDidMount(){
         axios.get("http://localhost:8080/application").then(res =>
         this.setState({dataApplication:res.data}),
         )

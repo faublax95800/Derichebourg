@@ -15,6 +15,16 @@ app.get("/", (req, res) => {
     }
   });
 });
+app.get("/telephonie",(req, res)=>{
+  connection.query("SELECT * FROM si_sng.telephonie", function(err, results){
+    if(err){
+      return res.status(500).send("probleme query")
+    }
+    else{
+      return res.status(200).send(results)
+    }
+  })
+})
 
 //recup info materiel
 app.get("/materiel",(req, res)=>{
@@ -135,11 +145,14 @@ app.post("/login", (req,res)=> {
             console.log(err)
             res.status(500).send("erreur"+ err)
           }
+          
           if(response){
             const token = jwt.sign({userMatricule}, 'DBG',{ expiresIn: '2m' });
             res.status(200).send({
             token:token,
-            message:"utilisateur connecté"
+            message:"utilisateur connecté",
+            //(aff nom home)recupere ds result mes iden
+            user:result
           })
 
           }else{
