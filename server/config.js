@@ -25,6 +25,7 @@ connection.connect(err => {
        matricule int(255) NOT NULL, 
        email varchar(255) NOT NULL,
        password varchar(255) NOT NULL,
+       type varchar (255) NULL,
        created_at DATETIME DEFAULT CURRENT_TIMESTAMP NULL,
        updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP NULL,
        PRIMARY KEY (id)
@@ -32,7 +33,12 @@ connection.connect(err => {
 
   connection.query(tableUsers, (err, results) => {
     if (err) throw err;
-
+    // connection.query('INSERT INTO si_sng.users(nom, prenom, matricule, email, password, type) VALUES ("User", "super", "0", "admin@hot.fr","0", "admin")', (err, result) => {
+    //   if (err) throw err;
+    //   console.log("votre admin est inscrit");
+    // }
+    
+    // )
     console.log("table users created");
   });
 

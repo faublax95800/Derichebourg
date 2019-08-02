@@ -37,7 +37,7 @@ class Register extends Component {
             console.log(res.data);
             
         }).catch(err=>{
-            console.log(err)            
+            console.log(err.response)            
         })
 
     }

@@ -29,6 +29,24 @@ class Home extends Component{
           [event.target.name]: event.target.value
         });
       };
+
+    deleteUser = (id) =>{
+        console.log(id);
+        axios.delete(`http://localhost:8080/user/${id}`).then(res =>{
+            console.log(res);
+            this.setState(prevState =>{
+                //actualiser la liste user supp
+                return {listUsers: prevState.listUsers.filter(
+                    userId => userId.id !== id
+                )}
+            })
+            
+        }).catch(err=>{
+            console.log(err)
+            //console.log(err.res.data.message);
+        })
+        
+    }
     
     render(){
         const getToken = localStorage.getItem("userToken");
@@ -54,6 +72,7 @@ class Home extends Component{
                         <p>{user.prenom}</p>
                         <p>{user.matricule}</p>
                         <Link to={`/user/${user.id}`}>voir fiche user</Link>
+                        <button onClick = {()=>this.deleteUser(user.id)} >supprimé cet utilisateur</button>
                         </div>)
                     }): <p>page d'accueil</p>                       
                

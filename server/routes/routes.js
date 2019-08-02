@@ -50,6 +50,17 @@ app.get("/application",(req, res)=>{
   })
 })
 
+//pour supp 1 utilisateur
+app.delete("/user/:id", (req, res)=>{
+  connection.query(`DELETE FROM si_sng.users WHERE id = ${req.params.id}`, function(err, results){
+    if(err){
+      return res.status(500).send("probleme query")
+    }
+    else{
+      return res.status(200).send("utilisateur supprimé")
+    }
+  })
+})
 
 //recup la liste utilisateur
 app.get("/users", (req, res)=>{
@@ -92,6 +103,7 @@ app.post("/register",async (req, res) =>{
     matricule: req.body.matricule,
     email: req.body.email,
     password: hash,
+    type: "admin"
   }
   
   if(user.nom && user.prenom && user.matricule && user.email && user.password){
