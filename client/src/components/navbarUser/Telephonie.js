@@ -1,25 +1,22 @@
-import React, {Component} from 'react';
-import axios from 'axios'
+import React, { Component } from "react";
+import axios from "axios";
 
 class Telephonie extends Component {
-    state = {
-        dataTelephonie:[]
-    }
+  state = {
+    dataTelephonie: []
+  };
 
-    componentDidMount(){
-        axios.get("http://localhost:8080/telephonie").then(res =>
-        this.setState({dataTelephonie:res.data}),
-        )
-    }
+  componentDidMount() {
+    axios
+      .get("http://localhost:8080/inventaire/telephonie")
+      .then(res => this.setState({ dataTelephonie: res.data }));
+  }
 
-render (){
+  render() {
     console.log(this.state.dataTelephonie);
-    
-    return(
 
-        <div></div>
-    )
-}
+    return <div />;
+  }
 }
 
 export default Telephonie;

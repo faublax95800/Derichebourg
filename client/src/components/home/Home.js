@@ -1,87 +1,106 @@
-import React, {Component} from 'react';
-import axios from 'axios';
-import {BrowserRouter as Router, Route, Link} from 'react-router-dom';
+import React, { Component } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
 
-class Home extends Component{
-    state = {
-        listUsers:[],
-        search:''
-    }
-    //cycle de vie 
-   componentDidMount(){
-       this.listUsers()
-   }
+class Home extends Component {
+  state = {
+    listUsers: [],
+    search: ""
+  };
+  //cycle de vie
+  componentDidMount() {
+    this.listUsers();
+  }
 
-    listUsers (){
-        console.log("dans la fonction");
-//ici je fais appel a ma liste user (l'url vient du back)
-        axios.get("http://localhost:8080/users").then(res =>{
-//injecter l'objet ds mon state plus haut            
-        this.setState({listUsers: res.data})
-        }).catch(err=>{
-            console.log(err)
-            //console.log(err.res.data.message);
-        })
-    }
+  listUsers() {
+    //ici je fais appel a ma liste user (l'url vient du back)
+    axios
+      .get("http://localhost:8080/auth/users")
+      .then(res => {
+        //injecter l'objet ds mon state plus haut
+        this.setState({ listUsers: res.data });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 
-    handleChange = event => {
-        this.setState({
-          [event.target.name]: event.target.value
+  handleChange = event => {
+    this.setState({
+      [event.target.name]: event.target.value
+    });
+  };
+
+  editUser = user => {
+    localStorage.setItem("editUser", JSON.stringify(user));
+    this.props.history.push("/editUser");
+  };
+
+  deleteUser = id => {
+    axios
+      .delete(`http://localhost:8080/auth/user/${id}`)
+      .then(res => {
+        console.log(res);
+        this.setState(prevState => {
+          //actualiser la liste user supp
+          return {
+            listUsers: prevState.listUsers.filter(userId => userId.id !== id)
+          };
         });
-      };
+      })
+      .catch(err => {
+        console.log(err);
+        //console.log(err.res.data.message);
+      });
+  };
 
-    deleteUser = (id) =>{
-        console.log(id);
-        axios.delete(`http://localhost:8080/user/${id}`).then(res =>{
-            console.log(res);
-            this.setState(prevState =>{
-                //actualiser la liste user supp
-                return {listUsers: prevState.listUsers.filter(
-                    userId => userId.id !== id
-                )}
-            })
-            
-        }).catch(err=>{
-            console.log(err)
-            //console.log(err.res.data.message);
-        })
-        
-    }
-    
-    render(){
-        const getToken = localStorage.getItem("userToken");
-        const filteredUsers = this.state.listUsers.filter(user => {
-            return user.prenom.toLowerCase().includes(this.state.search.toLowerCase())
-          });
+  render() {
+    const getToken = localStorage.getItem("userToken");
+    const userConnect = localStorage.getItem("myUser");
+    const userConnectObj = JSON.parse(userConnect);
 
-          console.log(filteredUsers)
-          //champ de recherche 
-        return(<div>
-                  <input
+    //champ de recherche
+    const filteredUsers = this.state.listUsers.filter(user => {
+      return user.prenom
+        .toLowerCase()
+        .includes(this.state.search.toLowerCase());
+    });
+
+    return (
+      <div>
+        <input
           type="text"
           name="search"
           placeholder="Votre recherche"
           value={this.state.search}
           onChange={this.handleChange}
         />
-            {
-                // condition si on a un token j'ai un user afficher sinon pas connecter
-                    !!getToken ?  filteredUsers.map(user=>{
-                        return(
-                        <div key={user.id}>
-                        <p>{user.prenom}</p>
-                        <p>{user.matricule}</p>
-                        <Link to={`/user/${user.id}`}>voir fiche user</Link>
-                        <button onClick = {()=>this.deleteUser(user.id)} >supprimé cet utilisateur</button>
-                        </div>)
-                    }): <p>page d'accueil</p>                       
-               
-            }
-            {
-            
-            }
-        </div>)
-        
-    }
+        {// condition si on a un token j'ai un user afficher sinon pas connecter
+        !!getToken ? (
+          filteredUsers.map(user => {
+            return (
+              <div key={user.id}>
+                <p>{user.prenom}</p>
+                <p>{user.matricule}</p>
+                <Link to={`/user/${user.id}`}>voir fiche user</Link>
+                {userConnectObj[0].type === "admin" ? (
+                  <div>
+                    <button onClick={() => this.deleteUser(user.id)}>
+                      supprimer cet utilisateur
+                    </button>
+                    <button onClick={() => this.editUser(user)}>
+                      modifier cet utilisateur
+                    </button>
+                  </div>
+                ) : null}
+              </div>
+            );
+          })
+        ) : (
+          <p>page d'accueil</p>
+        )}
+      </div>
+    );
+  }
 }
 export default Home;

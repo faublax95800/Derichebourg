@@ -5,9 +5,9 @@
 const app = require("express")();
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const Route = require("./routes/routes.js");
+const inventaireRoute = require("./routes/inventaire-route");
+const authRoute = require("./routes/auth-route");
 const port = 8080;
-
 
 //je dit a express d'utiliser cors et les () pour executer
 app.use(cors());
@@ -15,7 +15,8 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use("/", Route);
+app.use("/auth", authRoute);
+app.use("/inventaire", inventaireRoute);
 
 //ecoute le port
 app.listen(port, () => {

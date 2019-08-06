@@ -1,15 +1,30 @@
 import React, { Component } from "react";
 import axios from "axios";
 
-class Register extends Component {
+class EditUser extends Component {
   state = {
+    id: "",
     nom: "",
     prenom: "",
     matricule: "",
-    email: "",
-    password: ""
+    email: ""
   };
-  //pour n'utiliser que certaint caracteres
+
+  componentDidMount() {
+    const editUser = localStorage.getItem("editUser");
+    const editUserParse = JSON.parse(editUser);
+    const { id, nom, prenom, matricule, email } = editUserParse;
+
+    this.setState({
+      id: id,
+      nom: nom,
+      prenom: prenom,
+      matricule: matricule,
+      email: email
+    });
+  }
+
+  //pour n'utiliser que les chiffres
   //probleme
   handleChange(event) {
     const value = event.target.validity.valid
@@ -26,19 +41,19 @@ class Register extends Component {
 
   handleSubmit = event => {
     event.preventDefault();
-    const { nom, prenom, matricule, email, password } = this.state;
-    const user = {
+    const { nom, prenom, matricule, email, id } = this.state;
+    const editUser = {
       nom: nom,
       prenom: prenom,
       matricule: matricule,
-      email: email,
-      password: password
+      email: email
     };
     axios
-      .post("http://localhost:8080/auth/register", user)
+      .put(`http://localhost:8080/auth/user/${id}`, editUser)
       .then(res => {
         alert(res.data.message);
-        this.props.history.push("/login");
+        localStorage.removeItem("editUser");
+        this.props.history.push("/");
       })
       .catch(err => {
         console.log(err.response);
@@ -46,8 +61,7 @@ class Register extends Component {
   };
 
   render() {
-    console.log(this.state.nom);
-    const { nom, prenom, email, password } = this.state;
+    const { nom, prenom, email } = this.state;
     return (
       <div>
         <form onSubmit={this.handleSubmit}>
@@ -88,20 +102,11 @@ class Register extends Component {
             onChange={this.getInputValue}
           />
 
-          <input
-            value={password}
-            placeholder="mot de passe"
-            type="password"
-            name="password"
-            required
-            onChange={this.getInputValue}
-          />
-
-          <button>m'inscrire</button>
+          <button>Modifier</button>
         </form>
       </div>
     );
   }
 }
 
-export default Register;
+export default EditUser;
