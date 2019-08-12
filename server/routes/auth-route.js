@@ -90,7 +90,8 @@ app.post("/register", async (req, res) => {
     prenom: req.body.prenom,
     matricule: req.body.matricule,
     email: req.body.email,
-    password: hash
+    password: hash,
+    //type: "admin"
   };
 
   if (

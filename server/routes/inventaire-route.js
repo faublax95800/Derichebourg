@@ -47,4 +47,14 @@ app.get("/application", (req, res) => {
   });
 });
 
+app.post("/loaning", (req, res) =>{
+  connection.query("SELECT * FROM si_sng.loaning", function(err, results){
+    if (err) {
+      return res.status(500).send("probleme query");
+    } else {
+      return res.status(200).send(results);
+    }
+  });
+});
+
 module.exports = app;

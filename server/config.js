@@ -48,32 +48,32 @@ connection.connect(err => {
     if (err) throw err;
     console.log("table epi created");
 
-    // const createEpi = [
-    //   {
-    //     Code_epi: 1,
-    //     Libelle_epi: "Blouson homme DERICHEBOURG",
-    //     Nombre_de_points: 4
-    //   },
-    //   {
-    //     Code_epi: 2,
-    //     Libelle_epi: "Polaire brodée",
-    //     Nombre_de_points: 3
-    //   }
-    // ];
+    const createEpi = [
+      {
+        Code_epi: 1,
+        Libelle_epi: "Blouson homme DERICHEBOURG",
+        Nombre_de_points: 4
+      },
+      {
+        Code_epi: 2,
+        Libelle_epi: "Polaire brodée",
+        Nombre_de_points: 3
+      }
+    ];
 
-    // for (let i = 0; i < createEpi.length; i++) {
-    //   connection.query(
-    //     `INSERT INTO si_sng.epi (Code_epi, Libellé_epi, Nombres_points) VALUES (
-    //     ${createEpi[i].Code_epi},
-    //     "${createEpi[i].Libelle_epi}",
-    //     ${createEpi[i].Nombre_de_points}
-    //     )`,
-    //     (err, result) => {
-    //       if (err) throw err.message;
-    //       console.log(result);
-    //     }
-    //   );
-    // }
+    for (let i = 0; i < createEpi.length; i++) {
+      connection.query(
+        `INSERT INTO si_sng.epi (Code_epi, Libellé_epi, Nombres_points) VALUES (
+        ${createEpi[i].Code_epi},
+        "${createEpi[i].Libelle_epi}",
+        ${createEpi[i].Nombre_de_points}
+        )`,
+        (err, result) => {
+          if (err) throw err.message;
+          console.log(result);
+        }
+      );
+    }
   });
 
   const tableMateriel = `CREATE TABLE IF NOT EXISTS si_sng.materiel (
@@ -88,35 +88,35 @@ connection.connect(err => {
     if (err) throw err;
     console.log("table materiel created");
 
-    //   const createMateriel = [
-    //     {
-    //       Code_materiel: 1,
-    //       Libelle_materiel: "PC portable",
-    //       Marque: "Dell",
-    //       Model: "1"
-    //     },
-    //     {
-    //       Code_materiel: 2,
-    //       Libelle_materiel: "Tablette",
-    //       Marque: "Sony",
-    //       Model: "1"
-    //     }
-    //   ];
+      // const createMateriel = [
+      //   {
+      //     Code_materiel: 1,
+      //     Libelle_materiel: "PC portable",
+      //     Marque: "Dell",
+      //     Model: "1"
+      //   },
+      //   {
+      //     Code_materiel: 2,
+      //     Libelle_materiel: "Tablette",
+      //     Marque: "Sony",
+      //     Model: "1"
+      //   }
+      // ];
 
-    //   for (let i = 0; i < createMateriel.length; i++) {
-    //     connection.query(
-    //       `INSERT INTO si_sng.materiel (Code_materiel, Libellé_materiel, Marque, Model) VALUES (
-    //         ${createMateriel[i].Code_materiel},
-    //         "${createMateriel[i].Libelle_materiel}",
-    //         "${createMateriel[i].Marque}",
-    //         "${createMateriel[i].Model}"
-    //       )`,
-    //       (err, result) => {
-    //         if (err) throw err.message;
-    //         console.log(result);
-    //       }
-    //     );
-    //   }
+      // for (let i = 0; i < createMateriel.length; i++) {
+      //   connection.query(
+      //     `INSERT INTO si_sng.materiel (Code_materiel, Libellé_materiel, Marque, Model) VALUES (
+      //       ${createMateriel[i].Code_materiel},
+      //       "${createMateriel[i].Libelle_materiel}",
+      //       "${createMateriel[i].Marque}",
+      //       "${createMateriel[i].Model}"
+      //     )`,
+      //     (err, result) => {
+      //       if (err) throw err.message;
+      //       console.log(result);
+      //     }
+      //   );
+     // }
   });
 
   const tableApplication = `CREATE TABLE IF NOT EXISTS si_sng.application (
@@ -129,29 +129,29 @@ connection.connect(err => {
     if (err) throw err;
     console.log("table application created");
 
-    // const createApplication = [
-    //   {
-    //     Code_application: 1,
-    //     Libelle_application: "dclic"
-    //   },
-    //   {
-    //     Code_application: 2,
-    //     Libelle_application: "quartis"
-    //   }
-    // ];
+    const createApplication = [
+      {
+        Code_application: 1,
+        Libelle_application: "dclic"
+      },
+      {
+        Code_application: 2,
+        Libelle_application: "quartis"
+      }
+    ];
 
-    // for (let i = 0; i < createApplication.length; i++) {
-    //   connection.query(
-    //     `INSERT INTO si_sng.application (Code_application, Libelle_application) VALUES (
-    //     ${createApplication[i].Code_application},
-    //     "${createApplication[i].Libelle_application}"
-    //   )`,
-    //     (err, result) => {
-    //       if (err) throw err.message;
-    //       console.log(result);
-    //     }
-    //   );
-    // }
+    for (let i = 0; i < createApplication.length; i++) {
+      connection.query(
+        `INSERT INTO si_sng.application (Code_application, Libelle_application) VALUES (
+        ${createApplication[i].Code_application},
+        "${createApplication[i].Libelle_application}"
+      )`,
+        (err, result) => {
+          if (err) throw err.message;
+          console.log(result);
+        }
+      );
+    }
   });
   const tableTelephonie = `CREATE TABLE IF NOT EXISTS si_sng.telephonie (
   id int NOT null AUTO_INCREMENT,
@@ -196,6 +196,19 @@ connection.connect(err => {
       );
     }
   });
+
+  const tableLoaning = `CREATE TABLE IF NOT EXISTS si_sng.loaning (
+    id int NOT null AUTO_INCREMENT,
+    matricule int(255) NOT NULL,
+    idMateriel int(255) NOT NUll,
+    dateEmprunt int (255) NOT NULL,
+    date_at int NOT NULL,
+    PRIMARY KEY (id)
+  )ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;`
+  connection.query(tableLoaning, (err, results) => {
+    if (err) throw err;
+console.log("table loaning is created");
+  })
 });
 
 //export pour le l'utiliser autre part
