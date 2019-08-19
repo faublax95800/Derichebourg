@@ -8,6 +8,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import User from "./components/user/User.js";
 import EditUser from "./components/editUser/editUser";
 
+
 //exact = la que je souhaite avoir par defaut
 function App() {
   return (

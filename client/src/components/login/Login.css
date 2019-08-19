@@ -1,0 +1,16 @@
+form {
+    width: 80px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform:translate(-50%,-50%);
+}
+
+h3{
+    float: left;
+    font-size: 40px;
+    border-bottom: 6px solid rgb(173, 14, 14);
+    margin-bottom: 50px;
+    padding: 8px 0;
+    margin: 8px 0;
+}

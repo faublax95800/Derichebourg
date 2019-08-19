@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import "./Login.css";
 
 class Login extends Component {
   state = {
@@ -48,28 +49,33 @@ class Login extends Component {
   render() {
     const { password } = this.state;
     return (
-      <div>
+      <div className='container'>
+        
         <form onSubmit={this.handleSubmit}>
-          <input
-            placeholder="matricule"
-            type="text"
-            pattern="[0-9]*"
-            name="matricule"
-            required
-            onChange={this.handleChange.bind(this)}
-            value={this.state.matricule}
-          />
+        <h3>Connexion</h3>
+          <div class="form-group mb-2">
+            <label for="inputMatricule1">Matrictule</label>
+            <input class="form-control"
+              placeholder="matricule"
+              type="text"
+              pattern="[0-9]*"
+              name="matricule"
+              required
+              onChange={this.handleChange.bind(this)}
+              value={this.state.matricule}/>
+          </div>
 
-          <input
-            value={password}
-            placeholder="mot de passe"
-            type="password"
-            name="password"
-            required
-            onChange={this.getInputValue}
-          />
-
-          <button>connexion</button>
+          <div class="form-group mb-2">
+            <label class="label" style={{ width: '500px'}}>Mot de passe</label>
+            <input class="form-control"
+              value={password}
+              placeholder="mot de passe"
+              type="password"
+              name="password"
+              required
+              onChange={this.getInputValue}/>
+          </div>
+          <button type="submit" class="btn btn-success">connexion</button>
         </form>
       </div>
     );

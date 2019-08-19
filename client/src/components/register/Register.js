@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
+import "./Register.css";
 
 class Register extends Component {
   state = {
@@ -49,57 +50,69 @@ class Register extends Component {
     console.log(this.state.nom);
     const { nom, prenom, email, password } = this.state;
     return (
-      <div>
-        <form onSubmit={this.handleSubmit}>
-          <input
-            value={nom}
-            placeholder="nom"
-            type="text"
-            name="nom"
-            required
-            onChange={this.getInputValue}
-          />
+    <div className="container">
+    <form onSubmit={this.handleSubmit}>
+      <h3>Inscription</h3>
+        <div class="form-group mb-2">
+          <label class="label">Nom</label>
+            <input class="form-control"
+                  value={nom}
+                  placeholder="nom"
+                  type="text"
+                  name="nom"
+                  required
+                  onChange={this.getInputValue}/>
+        </div>
 
-          <input
-            value={prenom}
-            placeholder="prenom"
-            type="text"
-            name="prenom"
-            required
-            onChange={this.getInputValue}
-          />
-
-          <input
-            placeholder="matricule"
-            type="text"
-            pattern="[0-9]*"
-            name="matricule"
-            required
-            onInput={this.handleChange.bind(this)}
-            value={this.state.matricule}
-          />
-
-          <input
-            value={email}
-            placeholder="email"
-            type="email"
-            name="email"
-            required
-            onChange={this.getInputValue}
-          />
-
-          <input
-            value={password}
-            placeholder="mot de passe"
-            type="password"
-            name="password"
-            required
-            onChange={this.getInputValue}
-          />
-
-          <button>m'inscrire</button>
-        </form>
+        <div class="form-group mb-2">
+          <label class="label">Prenom</label>
+            <input class="form-control"
+                  value={prenom}
+                  placeholder="prenom"
+                  type="text"
+                  name="prenom"
+                  required
+                  onChange={this.getInputValue}/>
+        </div>
+    
+      <div class="form-group mb-2 border border-white">
+        <label class="label">Matricule</label>
+              <input class="form-control"
+                placeholder="matricule"
+                type="text"
+                pattern="[0-9]*"
+                name="matricule"
+                required
+                onInput={this.handleChange.bind(this)}
+                value={this.state.matricule}/>
       </div>
+
+      <div class="form-group mb-2">
+        <label class="label">E-mail</label>
+              <input class="form-control"
+                value={email}
+                placeholder="ex: votre@mail.fr"
+                type="email"
+                name="email"
+                required
+                onChange={this.getInputValue}/>
+      
+    </div>
+      <div class="form-group mb-2">
+        <label class="label" style={{ width: '500px'}}>Mot de passe</label>
+            <input class="form-control"
+              value={password}
+              placeholder="mot de passe"
+              type="password"
+              name="password"
+              required
+              onChange={this.getInputValue}/>
+      </div>
+    
+      <button  type="submit" class="btn btn-primary">m'inscrire</button>
+      
+    </form> 
+    </div>
     );
   }
 }

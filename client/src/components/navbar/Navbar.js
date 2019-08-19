@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-
+// import "./Navbar.css"
 class Navbar extends Component {
   disconnectUser = () => {
     return localStorage.clear();
@@ -10,18 +10,18 @@ class Navbar extends Component {
     const getMyUser = JSON.parse(localStorage.getItem("myUser"));
     //condition ternaire pour masquer les boutons
     return (
-      <div>
-        {!!getToken ? null : <a href="/register">inscription</a>}
+      <div class="" style={{backgroundColor:"#992222"}}>
+        {!!getToken ? null : <a class="badge badge-light" href="/register">Inscription</a>}
         {!!getToken ? (
           <div>
             {" "}
-            <p>bienvenue {`${getMyUser.map(user => user.prenom)}`}</p>
+            <p>Bienvenue {`${getMyUser.map(user => user.prenom)}`}</p>
             <a href="/" onClick={this.disconnectUser}>
-              deconnection
+              Deconnexion
             </a>{" "}
           </div>
         ) : (
-          <a href="/login">connection</a>
+          <a class="badge badge-danger" href="/login">Connexion</a>
         )}
       </div>
     );
