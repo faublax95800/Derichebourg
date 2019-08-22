@@ -10,8 +10,8 @@ class Navbar extends Component {
     const getMyUser = JSON.parse(localStorage.getItem("myUser"));
     //condition ternaire pour masquer les boutons
     return (
-      <div class="" style={{backgroundColor:"#992222"}}>
-        {!!getToken ? null : <a class="badge badge-light" href="/register">Inscription</a>}
+      <div className="" style={{backgroundColor:"#992222"}}>
+        {!!getToken ? null : <a className="badge badge-light" href="/register">Inscription</a>}
         {!!getToken ? (
           <div>
             {" "}
@@ -21,7 +21,7 @@ class Navbar extends Component {
             </a>{" "}
           </div>
         ) : (
-          <a class="badge badge-danger" href="/login">Connexion</a>
+          <a className="badge badge-danger" href="/login">Connexion</a>
         )}
       </div>
     );

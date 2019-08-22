@@ -3,7 +3,8 @@ import axios from "axios";
 
 class Telephonie extends Component {
   state = {
-    dataTelephonie: []
+    dataTelephonie: [],
+    filterModel: []
   };
 
   componentDidMount() {
@@ -12,11 +13,39 @@ class Telephonie extends Component {
       .then(res => this.setState({ dataTelephonie: res.data }));
   }
 
-  render() {
-    console.log(this.state.dataTelephonie);
+  findModel = (event) => {
+    const name = event.target.value
+    console.log('dans la fonction')
+    const result = this.state.dataTelephonie.filter(telephonie => telephonie.libelle_telephonie === name)
+    console.log(result)
+    this.setState({ filterModel: result })
+}
 
-    return <div />;
+handleSubmit =() => {
+  const userSelected = localStorage.getItem('userSelected')
+  const userSelectedParse = JSON.parse(userSelected)
+  const currentObj = this.state.filterModel.find(element => element)
+  const result = {
+    matricule : userSelectedParse.matricule, 
+    id_telephonie: currentObj.id,
+    code_telephonie : currentObj.code_telephonie
   }
 }
+
+render() {
+  console.log(this.state.dataTelephonie);
+  return (
+    <div>
+      <select onClick={this.findModel}>
+        {this.state.dataTelephonie.map(telephonie =>{
+          return <option key={telephonie.id}>{telephonie.libelle_telephonie}</option>
+          })}</select>
+          <button onClick={this.handleSubmit}>Enregistrer l'emprunt</button>
+      
+    </div>
+  );
+}
+}
+
 
 export default Telephonie;

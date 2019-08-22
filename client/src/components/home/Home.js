@@ -36,6 +36,10 @@ class Home extends Component {
     this.props.history.push("/editUser");
   };
 
+  selectUser = user => {
+    localStorage.setItem('userSelected', JSON.stringify(user))
+  }
+
   deleteUser = id => {
     axios
       .delete(`http://localhost:8080/auth/user/${id}`)
@@ -82,7 +86,7 @@ class Home extends Component {
               <div key={user.id}>
                 <p>{user.prenom}</p>
                 <p>{user.matricule}</p>
-                <Link to={`/user/${user.id}`}>voir fiche user</Link>
+                <Link to={`/user/${user.id}`} onClick={this.selectUser(user)}>voir fiche user</Link>
                 {userConnectObj[0].type === "admin" ? (
                   <div>
                     <button onClick={() => this.deleteUser(user.id)}>

@@ -5,7 +5,7 @@ import Telephonie from "../navbarUser/Telephonie";
 import EPI from "../navbarUser/EPI";
 import Personnel from "../navbarUser/Personnel";
 import Vehicule from "../navbarUser/Vehicule";
-import Materiel from "../navbarUser/Materiel";
+import Materiel from "../navbarUser/materiel/Materiel";
 
 class User extends Component {
   state = {
@@ -44,8 +44,6 @@ class User extends Component {
   };
 
   render() {
-    console.log(this.state.user);
-
     return (
       <div>
         <ul>

@@ -47,7 +47,17 @@ app.get("/application", (req, res) => {
   });
 });
 
-app.post("/loaning", (req, res) =>{
+app.get("/epi", (req, res) => {
+  connection.query("SELECT * FROM si_sng.epi", function(err, results) {
+    if (err) {
+      return res.status(500).send("probleme query");
+    } else {
+      return res.status(200).send(results);
+    }
+  });
+});
+
+app.get("/loaning", (req, res) =>{
   connection.query("SELECT * FROM si_sng.loaning", function(err, results){
     if (err) {
       return res.status(500).send("probleme query");
@@ -57,4 +67,83 @@ app.post("/loaning", (req, res) =>{
   });
 });
 
+//const tab = ['si_sng.materiel', 'si_sng']
+app.get("/loaning/:id", (req, res) => {
+  connection.query(`SELECT * FROM si_sng.materiel WHERE code_materiel = ${req.params.id}`, function(err, results){
+    if (err) {
+      return res.status(500).send("probleme query");
+    } else {
+      return res.status(200).send(results);
+    }
+  });
+})
+app.get("/loaning/:id", (req, res) => {
+  connection.query(`SELECT * FROM si_sng.epi WHERE code_epi = ${req.params.id}`, function(err, results){
+    if (err) {
+      return res.status(500).send("probleme query");
+    } else {
+      return res.status(200).send(results);
+    }
+  });
+})
+
+app.get("/loaning/:id", (req, res) => {
+  connection.query(`SELECT * FROM si_sng.application WHERE code_telephonie = ${req.params.id}`, function(err, results){
+    if (err) {
+      return res.status(500).send("probleme query");
+    } else {
+      return res.status(200).send(results);
+    }
+  });
+})
+
+app.get("/loaning/application/:id", (req, res) => {
+  connection.query(`SELECT * FROM si_sng.application WHERE id = ${req.params.id}`, function(err, results){
+    if (err) {
+      return res.status(500).send("probleme query");
+    } else {
+      return res.status(200).send(results);
+    }
+  });
+})
+
+app.get("/history/:id",async (req,res) =>{
+  await connection.query(`SELECT * FROM si_sng.loaning WHERE matricule = ${req.params.id}`, async function(err, result){
+  if (err) {
+    return res.status(500).send("probleme query");
+  } else{
+    const filteredByMatricule = result.map(obj => obj.id_materiel)
+
+    const removeDuplicateId = [...new Set(filteredByMatricule)]
+    for (let i = 0; i < removeDuplicateId.length; i++){
+      await connection.query(`SELECT * FROM si_sng.application WHERE id = ${removeDuplicateId[i]}`, function(err, results){
+        if (err) {
+          return res.status(500).send("probleme query", err);
+        } else {
+          res.status(200).send([...results, results]);
+        }
+      })
+    }
+  }
+});
+})
+
+
+
+app.post("/loaning",(req, res)=> {
+  console.log('req ici', req.body)
+  connection.query(`INSERT INTO si_sng.loaning (matricule, id_materiel, code_materiel) VALUES (
+    ${req.body.matricule},
+    ${req.body.id_materiel},
+    ${req.body.code_materiel}
+  )`,function(err, results){
+    if (err) {console.log(err.message);
+      return res.status(500).send(err.message);
+    } else {
+      console.log(req.body)
+      console.log('res', results)
+      return res.status(200).send(results);
+    }
+  })
+})
 module.exports = app;
