@@ -107,27 +107,65 @@ app.get("/loaning/application/:id", (req, res) => {
   });
 })
 
-app.get("/history/:id",async (req,res) =>{
-  await connection.query(`SELECT * FROM si_sng.loaning WHERE matricule = ${req.params.id}`, async function(err, result){
-  if (err) {
-    return res.status(500).send("probleme query");
-  } else{
-    const filteredByMatricule = result.map(obj => obj.id_materiel)
+// resolve 
 
-    const removeDuplicateId = [...new Set(filteredByMatricule)]
-    for (let i = 0; i < removeDuplicateId.length; i++){
-      await connection.query(`SELECT * FROM si_sng.application WHERE id = ${removeDuplicateId[i]}`, function(err, results){
-        if (err) {
-          return res.status(500).send("probleme query", err);
-        } else {
-          res.status(200).send([...results, results]);
+function query(queryName) {
+  return new Promise((resolve, reject) => {
+    connection.query(queryName, function(err, result){
+      if (err) {
+        console.log('erreur query: ', err)
+        reject(err)
+      } else {
+        resolve(JSON.stringify(result))
+      }
+    })
+  });
+}
+
+app.get("/history/:id", (req, res) => {
+  connection.query(
+    `SELECT * FROM si_sng.loaning WHERE matricule = ${req.params.id}`,
+    async function(err, result) {
+      if (err) {
+        return res.status(500).send("probleme query");
+      } else {
+        const filteredByIdMateriel = result.map(id => id.id_materiel);
+        const uniqueId = [...new Set(filteredByIdMateriel)];
+
+        const getApplicationById = [];
+        for (let i = 0; i < uniqueId.length; i++) {
+          const resultat = await query(
+            `SELECT * from si_sng.application WHERE id = ${uniqueId[i]}`
+          );
+          getApplicationById.push(resultat);
         }
-      })
-    }
-  }
-});
-})
 
+        // flat() marche sur nodejs a partir de la version 11 du coup je fais un concat
+        const resultatParse = getApplicationById.map(lol => JSON.parse(lol));
+        const resultat = resultatParse[0].concat(resultatParse[1]);
+
+        const finalData = [];
+        for (let i = 0; i < resultat.length; i++) {
+          if (filteredByIdMateriel.includes(resultat[i].id)) {
+            const date_emprunt = result
+              .map(date => {
+                if (resultat[i].id === date.id_materiel) {
+                  return date.date_emprunt;
+                }
+              })
+              .filter(onlyDate => onlyDate !== undefined)
+              .join("");
+            finalData.push({ ...resultat[i], ...date_emprunt[i] });
+          }
+        }
+
+        console.log('finaleData:', finalData)
+
+        return res.status(200).send(finalData);
+      }
+    }
+  );
+});
 
 
 app.post("/loaning",(req, res)=> {

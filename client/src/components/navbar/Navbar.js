@@ -16,7 +16,7 @@ class Navbar extends Component {
           <div>
             {" "}
             <p>Bienvenue {`${getMyUser.map(user => user.prenom)}`}</p>
-            <a href="/" onClick={this.disconnectUser}>
+            <a className="btn btn-outline-light" href="/" onClick={this.disconnectUser}>
               Deconnexion
             </a>{" "}
           </div>

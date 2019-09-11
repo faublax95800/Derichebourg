@@ -6,6 +6,7 @@ import EPI from "../navbarUser/EPI";
 import Personnel from "../navbarUser/Personnel";
 import Vehicule from "../navbarUser/Vehicule";
 import Materiel from "../navbarUser/materiel/Materiel";
+import './User.css';
 
 class User extends Component {
   state = {
@@ -47,12 +48,12 @@ class User extends Component {
     return (
       <div>
         <ul>
-          <li onClick={() => this.handleClick("personnel")}>Info general</li>
-          <li onClick={() => this.handleClick("application")}>Application</li>
-          <li onClick={() => this.handleClick("telephonie")}>Telephonie</li>
-          <li onClick={() => this.handleClick("EPI")}>E.P.I</li>
-          <li onClick={() => this.handleClick("materiel")}>Materiel</li>
-          <li onClick={() => this.handleClick("vehicule")}>Vehicule</li>
+          <li className="btn btn-outline-dark" onClick={() => this.handleClick("personnel")}>Info general</li>
+          <li className="btn btn-outline-dark" onClick={() => this.handleClick("application")}>Application</li>
+          <li className="btn btn-outline-dark" onClick={() => this.handleClick("telephonie")}>Telephonie</li>
+          <li className="btn btn-outline-dark" onClick={() => this.handleClick("EPI")}>E.P.I</li>
+          <li className="btn btn-outline-dark" onClick={() => this.handleClick("materiel")}>Materiel</li>
+          <li className="btn btn-outline-dark" onClick={() => this.handleClick("vehicule")}>Vehicule</li>
         </ul>
 
         {this.renderComp()}
@@ -67,7 +68,7 @@ class User extends Component {
           );
         })}
 
-        <a href="/">Home</a>
+        <a className="btn btn-light" href="/">Home</a>
       </div>
     );
   }

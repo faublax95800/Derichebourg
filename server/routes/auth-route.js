@@ -91,7 +91,7 @@ app.post("/register", async (req, res) => {
     matricule: req.body.matricule,
     email: req.body.email,
     password: hash,
-    //type: "admin"
+    type: "admin"
   };
 
   if (

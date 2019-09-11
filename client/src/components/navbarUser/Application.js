@@ -1,11 +1,13 @@
 import React, { Component } from "react";
 import axios from "axios";
+import ModalComfirm from "../navbarUser/shared/ModalComfirm.js"
 
 class Application extends Component {
   state = {
     dataApplication: [],
     filterModel: [],
-    historyLoaning: []
+    historyLoaning: [],
+    show: false
   };
 
   componentDidMount() {
@@ -14,13 +16,22 @@ class Application extends Component {
 
     axios
       .get("http://localhost:8080/inventaire/application")
-      .then(res => this.setState({ dataApplication: res.data }));
+      .then(res => {
+        console.log(res)
+        this.setState({ dataApplication: res.data })
+      })
     axios
       .get(`http://localhost:8080/inventaire/history/${userSelectedParse.matricule}`)
-      .then(res => this.setState({historyLoaning: res.data}))
-   console.log('test', this.state.historyLoaning)   
+      .then(res => {
+        console.log(res)
+        this.setState({ historyLoaning: res.data })
+    })  
   }
 
+  componentDidUpdate(prevstate){
+    //console.log(prevstate);
+    
+  }
 
   findModel = (event) => {
     const name = event.target.value
@@ -28,6 +39,10 @@ class Application extends Component {
     console.log(result)
     this.setState({ filterModel: result })
 }
+  hideModal =()=>{
+    this.setState({show: false})
+  }
+
   handleSubmit =()=>{
     const userSelected = localStorage.getItem('userSelected')
     const userSelectedParse = JSON.parse(userSelected)
@@ -40,29 +55,51 @@ class Application extends Component {
     axios
     .post("http://localhost:8080/inventaire/loaning", result)
     .then(res =>{
+      this.setState({show: false})
+      //this.props.history.push("/")
       console.log(res.data);
     })
     .catch(err=>{
-      console.log(err.response);
+      console.log(err);
       
     });
-   
   };
+
+  formatDate = date => {
+    const formatDate = new Date(date);
+    return formatDate.toLocaleString("fr-FR", { timeZone: "Europe/Paris" });
+  };
+
   render() {
 
     const { dataApplication, historyLoaning } = this.state;
-    console.log(dataApplication, historyLoaning)
+    console.log('history', historyLoaning)
     
     return (
       <div>
+        {this.state.show ? <div className="Modal__container">
+          <div className="Modal__main">
+            <h4>etes-vous  sur de vouloir comfirmer ?</h4>
+            <div className="Modal__confirmModal"></div>
+            <button className="btn btn-primary"
+            onClick={this.handleSubmit}
+            >Oui</button>
+            <button onClick={this.hideModal}>Non</button>
+          </div>
+        </div>: null}
         <select onClick={this.findModel}>
           {this.state.dataApplication.map(application =>{
             return <option key={application.id}>{application.libelle_application}</option>
             })}</select>
-            <button onClick={this.handleSubmit}>Enregistrer l'emprunt</button>
+            <button onClick={()=>this.setState({show : true})}>Enregistrer l'emprunt</button>
             {
-              this.state.historyLoaning.map(obj=> <p>{obj.libelle_application}</p>)
-            }
+              this.state.historyLoaning.map(obj=> 
+              <div>
+                <p>date d'emprunt  {this.formatDate(obj.date_emprunt)}</p>
+                <p>{obj.libelle_application}</p>
+              </div>
+
+              )}
         
       </div>
     );

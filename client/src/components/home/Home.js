@@ -86,7 +86,7 @@ class Home extends Component {
               <div key={user.id}>
                 <p>{user.prenom}</p>
                 <p>{user.matricule}</p>
-                <Link to={`/user/${user.id}`} onClick={this.selectUser(user)}>voir fiche user</Link>
+                <Link className="btn btn-secondary btn-sm" to={`/user/${user.id}`} onClick={this.selectUser(user)}>voir fiche user</Link>
                 {userConnectObj[0].type === "admin" ? (
                   <div>
                     <button onClick={() => this.deleteUser(user.id)}>
