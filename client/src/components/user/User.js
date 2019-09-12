@@ -46,8 +46,8 @@ class User extends Component {
 
   render() {
     return (
-      <div>
-        <ul>
+      <div >
+        <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
           <li className="btn btn-outline-dark" onClick={() => this.handleClick("personnel")}>Info general</li>
           <li className="btn btn-outline-dark" onClick={() => this.handleClick("application")}>Application</li>
           <li className="btn btn-outline-dark" onClick={() => this.handleClick("telephonie")}>Telephonie</li>
@@ -61,7 +61,7 @@ class User extends Component {
         {// condition si on a un token j'ai un user afficher sinon pas connecter
         this.state.user.map(user => {
           return (
-            <div key={user.id}>
+            <div className="user" key={user.id}>
               <p>{user.nom}</p>
               <p>{user.matricule}</p>
             </div>

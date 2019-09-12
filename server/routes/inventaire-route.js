@@ -140,9 +140,9 @@ app.get("/history/:id", (req, res) => {
           getApplicationById.push(resultat);
         }
 
-        // flat() marche sur nodejs a partir de la version 11 du coup je fais un concat
+        // // flat() marche sur nodejs a partir de la version 11 du coup je fais un concat
         const resultatParse = getApplicationById.map(lol => JSON.parse(lol));
-        const resultat = resultatParse[0].concat(resultatParse[1]);
+        const resultat = resultatParse[0].concat(...resultatParse);
 
         const finalData = [];
         for (let i = 0; i < resultat.length; i++) {
@@ -150,17 +150,18 @@ app.get("/history/:id", (req, res) => {
             const date_emprunt = result
               .map(date => {
                 if (resultat[i].id === date.id_materiel) {
-                  return date.date_emprunt;
+                  return `${date.date_emprunt}`;
                 }
               })
               .filter(onlyDate => onlyDate !== undefined)
               .join("");
-            finalData.push({ ...resultat[i], ...date_emprunt[i] });
+
+            finalData.push({
+              ...resultat[i],
+              date_emprunt: date_emprunt
+            });
           }
         }
-
-        console.log('finaleData:', finalData)
-
         return res.status(200).send(finalData);
       }
     }

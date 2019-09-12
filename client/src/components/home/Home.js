@@ -72,13 +72,14 @@ class Home extends Component {
 
     return (
       <div>
-        <input
-          type="text"
-          name="search"
-          placeholder="Votre recherche"
-          value={this.state.search}
-          onChange={this.handleChange}
-        />
+         {!!getToken ? (
+          <input
+            type="text"
+            name="search"
+            placeholder="Votre recherche"
+            value={this.state.search}
+            onChange={this.handleChange}
+            />) : null}
         {// condition si on a un token j'ai un user afficher sinon pas connecter
         !!getToken ? (
           filteredUsers.map(user => {
@@ -89,10 +90,10 @@ class Home extends Component {
                 <Link className="btn btn-secondary btn-sm" to={`/user/${user.id}`} onClick={this.selectUser(user)}>voir fiche user</Link>
                 {userConnectObj[0].type === "admin" ? (
                   <div>
-                    <button onClick={() => this.deleteUser(user.id)}>
+                    <button type="button" class="btn btn-outline-danger" onClick={() => this.deleteUser(user.id)}>
                       supprimer cet utilisateur
                     </button>
-                    <button onClick={() => this.editUser(user)}>
+                    <button type="button" class="btn btn-outline-dark" onClick={() => this.editUser(user)}>
                       modifier cet utilisateur
                     </button>
                   </div>
