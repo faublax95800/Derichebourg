@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import "./Register.css";
+// import "./Register.css";
 
 class Register extends Component {
   state = {
@@ -13,7 +13,7 @@ class Register extends Component {
   //pour n'utiliser que certaint caracteres
   //probleme
   handleChange(event) {
-    const value = event.target.validity.valid
+    const value = (event.target.validity.valid)
       ? event.target.value
       : this.state.matricule;
     this.setState({ matricule: value });
@@ -45,9 +45,7 @@ class Register extends Component {
         console.log(err.response);
       });
   };
-
-  render() {
-    console.log(this.state.nom);
+render() {
     const { nom, prenom, email, password } = this.state;
     return (
     <div className="container">
@@ -74,15 +72,14 @@ class Register extends Component {
                   required
                   onChange={this.getInputValue}/>
         </div>
-    
-      <div class="form-group mb-2 border border-white">
+ 
+
+<div class="form-group mb-2 border border-white">
         <label class="label">Matricule</label>
               <input class="form-control"
                 placeholder="matricule"
                 type="text"
                 pattern="[0-9]*"
-                name="matricule"
-                required
                 onInput={this.handleChange.bind(this)}
                 value={this.state.matricule}/>
       </div>
@@ -96,7 +93,7 @@ class Register extends Component {
                 name="email"
                 required
                 onChange={this.getInputValue}/>
-      
+
     </div>
       <div class="form-group mb-2">
         <label class="label" style={{ width: '500px'}}>Mot de passe</label>
@@ -108,9 +105,9 @@ class Register extends Component {
               required
               onChange={this.getInputValue}/>
       </div>
-    
+
       <button  type="submit" class="btn btn-primary">m'inscrire</button>
-      
+
     </form> 
     </div>
     );

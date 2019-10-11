@@ -20,6 +20,8 @@ app.get("/telephonie", (req, res) => {
     if (err) {
       return res.status(500).send("probleme query");
     } else {
+      console.log(results);
+      
       return res.status(200).send(results);
     }
   });
@@ -158,16 +160,33 @@ app.get("/history/:id", (req, res) => {
 
             finalData.push({
               ...resultat[i],
-              date_emprunt: date_emprunt
+              date_emprunt: date_emprunt,
+              matricule: req.params.id
+
             });
           }
         }
-        return res.status(200).send(finalData);
+        const removeDuplicateDate = finalData.filter((item, pos) => {
+          return finalData.map(obj => obj.date_emprunt).indexOf(item.date_emprunt) === pos;
+      })
+        return res.status(200).send(removeDuplicateDate);
       }
     }
   );
 });
 
+app.delete('/deleteLoaning/:matricule/:id_materiel', (req, res) => {
+  //delete from si_sng.loaning where matricule = {} and id_materiel = {};
+  connection.query(`DELETE from si_sng.loaning WHERE matricule = ${req.params.matricule} AND id_materiel = ${req.params.id_materiel}`, function(err, result){
+    if (err) {
+      console.log(err.message);
+      return res.status(500).send(err.message);
+    } else {
+      console.log("res", result);
+      return res.status(200).send('emprunt supprimer');
+    }
+  })
+})
 
 app.post("/loaning",(req, res)=> {
   console.log('req ici', req.body)

@@ -60,7 +60,6 @@ class Login extends Component {
               type="text"
               pattern="[0-9]*"
               name="matricule"
-              required
               onChange={this.handleChange.bind(this)}
               value={this.state.matricule}/>
           </div>

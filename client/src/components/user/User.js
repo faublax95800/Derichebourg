@@ -16,8 +16,10 @@ class User extends Component {
 
   componentDidMount() {
     const userId = this.props.match.params.id;
-    axios.get(`http://localhost:8080/user/${userId}`).then(res => {
+    axios.get(`http://localhost:8080/auth/user/${userId}`).then(res => {
       this.setState({ user: res.data });
+      console.log(res);
+      
     });
   }
 
@@ -27,18 +29,18 @@ class User extends Component {
   };
   renderComp = () => {
     switch (this.state.nameComponent) {
-      case "personnel":
-        return <Personnel />;
+      case "personnel": 
+        return <Personnel user={this.state.user}/>;
       case "application":
-        return <Application />;
+        return <Application user={this.state.user}/>;
       case "telephonie":
-        return <Telephonie />;
+        return <Telephonie user={this.state.user}/>;
       case "EPI":
-        return <EPI />;
+        return <EPI user={this.state.user}/>;
       case "materiel":
-        return <Materiel />;
+        return <Materiel user={this.state.user}/>;
       case "vehicule":
-        return <Vehicule />;
+        return <Vehicule user={this.state.user}/>;
       default:
         console.log("peut etre un probleme");
     }
@@ -58,15 +60,6 @@ class User extends Component {
 
         {this.renderComp()}
 
-        {// condition si on a un token j'ai un user afficher sinon pas connecter
-        this.state.user.map(user => {
-          return (
-            <div className="user" key={user.id}>
-              <p>{user.nom}</p>
-              <p>{user.matricule}</p>
-            </div>
-          );
-        })}
 
         <a className="btn btn-light" href="/">Home</a>
       </div>
