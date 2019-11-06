@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import axios from "axios";
-// import "./Register.css";
+import "./Register.css";
 
+// state = Un état a un instanté, un état peut etre muté.
 class Register extends Component {
   state = {
     nom: "",
@@ -10,8 +11,8 @@ class Register extends Component {
     email: "",
     password: ""
   };
-  //pour n'utiliser que certaint caracteres
-  //probleme
+  //pour n'utiliser que certain caracteres
+  //permet de recuperer la valeur de Matricule
   handleChange(event) {
     const value = (event.target.validity.valid)
       ? event.target.value
@@ -19,15 +20,19 @@ class Register extends Component {
     this.setState({ matricule: value });
   }
 
+  //permet de recuperer la valeur des inputs
   getInputValue = event => {
     this.setState({
       [event.target.name]: event.target.value
     });
   };
-
+//=le boutton envoyé
   handleSubmit = event => {
+    //.preventDefault empêche le rechargement de la page par defaut dù à event
     event.preventDefault();
+    //destructuring js
     const { nom, prenom, matricule, email, password } = this.state;
+    //gauche colonne de ma table et droite mon state
     const user = {
       nom: nom,
       prenom: prenom,
@@ -35,16 +40,21 @@ class Register extends Component {
       email: email,
       password: password
     };
+    //pour envoyer les infos user vers le back
     axios
       .post("http://localhost:8080/auth/register", user)
+      //la reponse du post 
       .then(res => {
+        //recup le message mis dans mon back
         alert(res.data.message);
         this.props.history.push("/login");
       })
+      //en cas d'erreur
       .catch(err => {
         console.log(err.response);
       });
   };
+  //methode permet de retourner du html
 render() {
     const { nom, prenom, email, password } = this.state;
     return (
@@ -59,11 +69,12 @@ render() {
                   type="text"
                   name="nom"
                   required
+                  //event qui permet d'ecouter mon input
                   onChange={this.getInputValue}/>
         </div>
 
         <div class="form-group mb-2">
-          <label class="label">Prenom</label>
+          <label class="label">Prénom</label>
             <input class="form-control"
                   value={prenom}
                   placeholder="prenom"
@@ -96,7 +107,7 @@ render() {
 
     </div>
       <div class="form-group mb-2">
-        <label class="label" style={{ width: '500px'}}>Mot de passe</label>
+        <label class="label">Mot de passe</label>
             <input class="form-control"
               value={password}
               placeholder="mot de passe"
@@ -106,7 +117,7 @@ render() {
               onChange={this.getInputValue}/>
       </div>
 
-      <button  type="submit" class="btn btn-primary">m'inscrire</button>
+      <button type="submit" class="btn btn-primary">m'inscrire</button>
 
     </form> 
     </div>

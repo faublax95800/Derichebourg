@@ -14,3 +14,13 @@ h3{
     padding: 8px 0;
     margin: 8px 0;
 }
+
+
+label {
+    margin-top:10px;
+    display:block;
+    left: 0px;
+    padding: 5%;
+    width: 100%;
+    box-sizing: content-box;
+}

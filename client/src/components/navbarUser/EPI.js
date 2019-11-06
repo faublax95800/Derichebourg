@@ -36,6 +36,7 @@ class EPI extends Component {
         console.log(this.state.dataEpi);
         return (
               <div>
+                <h1>en cours de creation</h1>
                 <select onClick={this.findModel}>
                   {this.state.dataEpi.map(epi =>{
                     return <option key={epi.id}>{epi.libelle_epi}</option>

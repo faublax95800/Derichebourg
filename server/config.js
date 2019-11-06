@@ -1,5 +1,6 @@
 const mysql = require("mysql");
 require("dotenv").config();
+
 //creation de la connexion mysql
 const connection = mysql.createConnection({
   host: "localhost",
@@ -7,18 +8,19 @@ const connection = mysql.createConnection({
   password: process.env.PASSWORD_DB
 });
 
-// pour dire qu'on ce connect a mysql
+// pour dire qu'on se connecte à mysql
 connection.connect(err => {
   if (err) throw err;
   console.log("connected");
 
   const createDB = "CREATE DATABASE IF NOT EXISTS si_sng";
+  // .query est une methode mysql qui permet d'executer des requetes sql
   connection.query(createDB, (err, results) => {
     if (err) throw err;
     console.log("database created");
   });
 
-  // pour creer la table users le =>.user sert a dire que tu cree la table user ds cette database
+  // pour creer la table users le =>.user sert à dire que tu creer la table user dans cette database
   const tableUsers = `CREATE TABLE IF NOT EXISTS si_sng.users (
        id int NOT null AUTO_INCREMENT,
        nom varchar(255) NOT NULL,
@@ -48,6 +50,7 @@ connection.connect(err => {
     if (err) throw err;
     console.log("table epi created");
 
+    // Par défaut je rentre ces données
     const createEpi = [
       {
         code_epi: 1,
@@ -63,11 +66,13 @@ connection.connect(err => {
 
     for (let i = 0; i < createEpi.length; i++) {
       connection.query(
+        //69 a 72 je vérifie les elements de ma const createEpi si ils existent ou non
         `SELECT * FROM si_sng.epi WHERE code_epi = ${createEpi[i].code_epi} 
           AND libelle_epi = "${createEpi[i].libelle_epi}"
           AND nombres_points = ${createEpi[i].nombre_de_points}`,
           (err, result) => {
             if (err) throw err;
+            // Si dans la table epi est égal à 0 ça veut dire qu'on insert les données de createEpi
             if (!result.length > 0){
               connection.query(
                 `INSERT INTO si_sng.epi (code_epi, libelle_epi, nombres_points) VALUES (

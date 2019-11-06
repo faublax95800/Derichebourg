@@ -7,9 +7,9 @@ class Login extends Component {
     matricule: "",
     password: ""
   };
-  //pour n'utiliser que certaint caracteres
+  //pour n'utiliser que certain caracteres
   //probleme
-  //setstate mettre a jours
+  //setstate mettre à jour
   handleChange(event) {
     const value = event.target.validity.valid
       ? event.target.value
@@ -33,9 +33,12 @@ class Login extends Component {
     axios
       .post("http://localhost:8080/auth/login", user)
       .then(res => {
+        //le localStorage sert à stocker des données depuis un navigateur
+         //je recup le token
         localStorage.setItem("userToken", res.data.token);
+       //redirection
         this.props.history.push("/");
-        //j'envoi 1 objet ds le local storage
+        //j'envoie 1'objet dans le local storage
         localStorage.setItem("myUser", JSON.stringify(res.data.user));
       })
       .catch(err => {
@@ -65,7 +68,7 @@ class Login extends Component {
           </div>
 
           <div class="form-group mb-2">
-            <label class="label" style={{ width: '500px'}}>Mot de passe</label>
+            <label class="label">Mot de passe</label>
             <input class="form-control"
               value={password}
               placeholder="mot de passe"
@@ -82,3 +85,4 @@ class Login extends Component {
 }
 
 export default Login;
+//style={{ width: '500px'}}

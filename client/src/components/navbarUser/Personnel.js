@@ -13,15 +13,15 @@ class Personnel extends Component {
     render(){
         console.log(this.state.user)
         return (
-            <div>ici personnel
+            <div>
 
                 {this.state.user.map(obj => {
                     return <>
                     <h4>Prénom : {obj.prenom}</h4>
                     <h4>Nom: {obj.nom}</h4>
                     <h4>mail : {obj.email}</h4>
-                    <p>Matricule : {obj.matricule}</p>
-                    <p>créer le : {this.formatDate(obj.created_at)}</p>
+                    <h4>Matricule : {obj.matricule}</h4>
+                    <h4>créer le : {this.formatDate(obj.created_at)}</h4>
                     </>
                 })}
             </div>

@@ -9,3 +9,12 @@ form {
 .form-control{
     width: 250px;
 }
+
+label {
+    margin-top:10px;
+    display:block;
+    left: 1px;
+    width: 10%;
+    box-sizing: content-box;
+}
+
